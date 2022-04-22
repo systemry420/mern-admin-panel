@@ -1,6 +1,7 @@
 import { AppDataSource } from './../index';
 import { Request, Response } from "express";
 import { User } from "../entity/user.entity";
+import { RegisterValidation } from '../validation/register.validation';
 
 export const Register = async (request: Request, response: Response) => {
 
@@ -16,11 +17,11 @@ export const Register = async (request: Request, response: Response) => {
     user.email = request.body.email
     user.password = request.body.password
 
-    // const { error } = RegisterValidation.validate(body)
+    const { error } = RegisterValidation.validate(request.body)
 
-    // if (error) {
-    //     response.status(400).send(error.details)
-    // }
+    if (error) {
+        response.status(400).send(error.details)
+    }
 
 
     // const repo = AppDataSource.getRepository(User)
@@ -31,6 +32,19 @@ export const Register = async (request: Request, response: Response) => {
         console.log('saved');
         response.status(200).send(user)
     })
+}
+
+export const Login = async (request: Request, response: Response) => {
+    const user = await AppDataSource.getRepository(User).findOneBy({
+        email: request.body.email
+    })
+
+    if (!user || user.password != request.body.password) {
+        response.status(404).send({
+            message: 'Invalid credentials'
+        })
+    }
 
 
+    response.status(200).send(user)
 }
