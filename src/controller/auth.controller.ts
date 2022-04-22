@@ -2,6 +2,7 @@ import { AppDataSource } from './../index';
 import { Request, Response } from "express";
 import { User } from "../entity/user.entity";
 import { RegisterValidation } from '../validation/register.validation';
+import { sign } from 'jsonwebtoken';
 
 export const Register = async (request: Request, response: Response) => {
 
@@ -45,6 +46,16 @@ export const Login = async (request: Request, response: Response) => {
         })
     }
 
+    const token = sign({
+        id: user.id
+    }, "secret")
 
-    response.status(200).send(user)
+    response.cookie('jwt', token, {
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24
+    })
+
+    response.status(200).send({
+        message: 'success'
+    })
 }
