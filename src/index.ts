@@ -1,9 +1,9 @@
 import express, { Request, Response } from 'express'
 import cors from 'cors'
 import { routes } from './routes'
-import { createConnection } from 'typeorm'
+import { createConnection, DataSource } from 'typeorm'
 
-createConnection({
+export const AppDataSource = new DataSource({
     type: 'mysql',
     host: 'localhost',
     port: 3306,
@@ -14,12 +14,16 @@ createConnection({
         'src/entity/*.ts'
     ],
     synchronize: true
-}).then(connection => {
+})
+
+
+AppDataSource.initialize()
+.then(connection => {
     const app = express()
-    
+
     app.use(express.json())
     
-    app.use(cors({
+    app.use(cors({ 
         origin: 'http://localhost:3000'
     }))
     
@@ -29,5 +33,4 @@ createConnection({
         console.log('listening to port 8000');
         
     })
-    
 })
