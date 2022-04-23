@@ -5,7 +5,9 @@ import { Request, Response } from "express";
 export const GetAllUsers = async (req: Request, res: Response) => {
     const repo = AppDataSource.getRepository(User)
 
-    const users = await repo.find()
+    const users = await repo.find({
+        relations: ['role']
+    })
 
     res.send(users.map(u => {
         const {password, ...user} = u
@@ -19,7 +21,13 @@ export const CreateUser = async (req: Request, res: Response) => {
 
     const {role_id, ...body} = req.body
     
-    const {password, ...user} = await repo.save(body)
+    const {password, ...user} = await repo.save({
+        ...body,
+        password: '1234',
+        role: {
+            id: role_id 
+        }
+    })
 
     res.send(user) 
 }
@@ -29,7 +37,7 @@ export const GetUserById = async (req: Request, res: Response) => {
 
     const {password, ...user} = await repo.findOneBy({id: parseInt(req.params.id)})   
 
-    res.status(201).send(user)    
+    res.status(201).send(user)
 }
 
 export const UpdateUser = async (req: Request, res: Response) => {
@@ -37,9 +45,19 @@ export const UpdateUser = async (req: Request, res: Response) => {
 
     const {role_id, ...body} = req.body
     
-    await repo.update(req.params.id, body)
+    await repo.update(req.params.id, {
+        ...body,
+        role: {
+            id: role_id
+        }
+    })
 
-    res.status(202).send(body)
+    res.status(202).send({
+        ...body,
+        role: {
+            id: role_id
+        }
+    })
 }
 
 export const DeleteUser = async (req: Request, res: Response) => {
