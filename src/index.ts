@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express'
 import cors from 'cors'
 import { routes } from './routes'
 import { createConnection, DataSource } from 'typeorm'
+import cookieParser from 'cookie-parser'
 
 export const AppDataSource = new DataSource({
     type: 'mysql',
@@ -22,8 +23,11 @@ AppDataSource.initialize()
     const app = express()
 
     app.use(express.json())
+
+    app.use(cookieParser())
     
-    app.use(cors({ 
+    app.use(cors({
+        credentials: true,
         origin: 'http://localhost:3000'
     }))
     

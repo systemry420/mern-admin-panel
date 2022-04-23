@@ -2,7 +2,7 @@ import { AppDataSource } from './../index';
 import { Request, Response } from "express";
 import { User } from "../entity/user.entity";
 import { RegisterValidation } from '../validation/register.validation';
-import { sign } from 'jsonwebtoken';
+import { sign, verify } from 'jsonwebtoken';
 
 export const Register = async (request: Request, response: Response) => {
 
@@ -57,5 +57,31 @@ export const Login = async (request: Request, response: Response) => {
 
     response.status(200).send({
         message: 'success'
+    })
+}
+
+export const AuthenticatedUser = async (request: Request, response: Response) => {
+    const jwt = request.cookies['jwt']
+
+    const payload: any = verify(jwt, 'secret')
+
+    if (!payload) {
+        response.status(401).send({
+            message: 'Not found'
+        })
+    }
+
+    const {password, ...user} = await AppDataSource.getRepository(User).findOneBy({
+        id: payload.id
+    })
+
+    response.send(user)
+}
+
+export const Logout = async (request: Request, response: Response) => {
+    response.cookie('jwt', '', { maxAge: 0 })
+
+    response.send({
+        message: 'logout success'
     })
 }
