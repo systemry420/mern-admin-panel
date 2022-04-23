@@ -13,6 +13,13 @@ export const Register = async (request: Request, response: Response) => {
     }
 
     const user = new User() 
+    // {
+    //     "first_name": "Max",
+    //     "last_name": "Max",
+    //     "email": "email@gmail.com",
+    //     "password": "pass",
+    //     "password_confirm": "pass"
+    // }
     user.first_name = request.body.first_name
     user.last_name = request.body.last_name
     user.email = request.body.email
@@ -48,7 +55,7 @@ export const Login = async (request: Request, response: Response) => {
 
     const token = sign({
         id: user.id
-    }, "secret")
+    }, process.env.SECRET_KEY)
 
     response.cookie('jwt', token, {
         httpOnly: true,
@@ -61,21 +68,7 @@ export const Login = async (request: Request, response: Response) => {
 }
 
 export const AuthenticatedUser = async (request: Request, response: Response) => {
-    const jwt = request.cookies['jwt']
-
-    const payload: any = verify(jwt, 'secret')
-
-    if (!payload) {
-        response.status(401).send({
-            message: 'Not found'
-        })
-    }
-
-    const {password, ...user} = await AppDataSource.getRepository(User).findOneBy({
-        id: payload.id
-    })
-
-    response.send(user)
+    response.send(request['user'])   
 }
 
 export const Logout = async (request: Request, response: Response) => {
