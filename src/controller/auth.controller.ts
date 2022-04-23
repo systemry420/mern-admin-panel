@@ -78,3 +78,35 @@ export const Logout = async (request: Request, response: Response) => {
         message: 'logout success'
     })
 }
+
+export const UpdateInfo = async (request: Request, response: Response) => {
+    const user = request['user']
+
+    const repo = AppDataSource.getRepository(User)
+
+    await repo.update(user.id, request.body)
+
+    const {password, ...data} = await repo.findOneBy({id: user.id})
+
+    response.send(data) 
+}
+
+export const UpdatePassword = async (request: Request, response: Response) => {
+    const user = request['user']
+
+    if (request.body.password !== request.body.password_confirm) {
+        response.status(400).send({
+            message: 'Wrong pass'
+        })
+    }
+
+    const repo = AppDataSource.getRepository(User)
+
+    await repo.update(user.id, {
+        password: request.body.password
+    })
+
+    const data = await repo.findOneBy({id: user.id})
+    
+    response.send(data)
+}
