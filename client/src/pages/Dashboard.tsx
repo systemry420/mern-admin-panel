@@ -1,8 +1,11 @@
 import React from 'react'
+import Wrapper from '../components/Wrapper'
 
 const Dashboard = () => {
   return (
-    <div>Dashboard</div>
+    <Wrapper>
+        Dashboard
+    </Wrapper>
   )
 }
 
