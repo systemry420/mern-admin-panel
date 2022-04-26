@@ -1,5 +1,6 @@
 import axios from 'axios'
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const Register = () => {
 
@@ -10,6 +11,8 @@ const Register = () => {
         password: '',
         password_confirm: '',
     })
+
+    const navigate = useNavigate()
 
     const handleSubmit = async (e: any) => {
         e.preventDefault()
@@ -23,6 +26,9 @@ const Register = () => {
         })
         .then(res => {
             console.log(res);
+            if (res.status === 200)
+                navigate('/login')
+
         })
 
     }

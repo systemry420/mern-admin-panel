@@ -16,6 +16,15 @@ export const GetAllUsers = async (req: Request, res: Response) => {
 }
 
 
+export const GetUserByEmail = async (req: Request, res: Response) => {
+    const repo = AppDataSource.getRepository(User)
+
+    const {password, ...user} = await repo.findOneBy({email: req.body.email})   
+
+    res.status(201).send(user)
+}
+
+
 export const CreateUser = async (req: Request, res: Response) => {
     const repo = AppDataSource.getRepository(User)
 

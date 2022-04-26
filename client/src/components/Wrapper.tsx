@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Navbar } from './Navbar'
+import Navbar from './Navbar'
 import Sidebar from './Sidebar'
 
 class Wrapper extends Component<any, any> {
