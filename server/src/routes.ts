@@ -19,7 +19,7 @@ export const routes = (router: Router) => {
     router.put('/api/user/password', AuthMiddleware, UpdatePassword)
 
     router.get('/api/user', AuthMiddleware, GetUserByEmail)
-    router.get('/api/users', AuthMiddleware, GetAllUsers)
+    router.get('/api/users', GetAllUsers)
     router.post('/api/users/create', AuthMiddleware, CreateUser)
     router.get('/api/users/:id', AuthMiddleware, GetUserById)
     router.put('/api/users/:id', AuthMiddleware, UpdateUser)
