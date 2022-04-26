@@ -35,7 +35,7 @@ export const Register = async (request: Request, response: Response) => {
     // const repo = AppDataSource.getRepository(User)
     // await repo.save(user)
 
-    await AppDataSource.manager.save(user)
+    AppDataSource.manager.save(user) 
     .then(() => {
         console.log('saved');
         response.status(200).send(user)

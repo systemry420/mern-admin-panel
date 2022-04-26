@@ -1,3 +1,4 @@
+import axios from 'axios'
 import React from 'react'
 
 const Register = () => {
@@ -10,15 +11,25 @@ const Register = () => {
         password_confirm: '',
     })
 
-    const handleSubmit = (e: any) => {
+    const handleSubmit = async (e: any) => {
         e.preventDefault()
-        console.log(input);
         
+        fetch('http://localhost:8000/api/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(input)
+        })
+        .then(res => {
+            console.log(res);
+        })
+
     }
 
   return (
-    <div  className="form-signin p-2 d-flex justify-center" >
-        <form style={{width: '50%', maxWidth: 450}} onSubmit={handleSubmit}>
+    <div className="container p-3 justify-center" >
+        <form className='col-lg-6 col-sm-12' onSubmit={handleSubmit}>
             <h1 className="h3 mb-3 fw-normal">Please sign in</h1>
             <div className="form-floating">
                 <input type="text" 
