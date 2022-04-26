@@ -13,6 +13,23 @@ const User = () => {
       setUsers(users)
     })()
   }, [])
+
+  const deleteUser = (id: any) => {
+    console.log(id);
+    
+    fetch(`http://localhost:8000/api/users/${parseInt(id)}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8' // Indicates the content 
+       },
+    })
+      .then(res => {
+        console.log(res);
+        setUsers((users) => {
+          return users.filter(user => user.id !== id)
+        })
+      })
+  }
   
   return (
     <Wrapper>
@@ -34,7 +51,9 @@ const User = () => {
                   <td>{user.first_name}</td>
                   <td>{user.last_name}</td>
                   <td>{user.email}</td>
-                  {/* <td>{user.role.name}</td> */}
+                  <td>
+                    <button onClick={() => deleteUser(user.id)} className='btn btn-danger'>Del</button>
+                  </td>
                 </tr>
               )
             })}

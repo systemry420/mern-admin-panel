@@ -69,10 +69,14 @@ export const UpdateUser = async (req: Request, res: Response) => {
     })
 }
 
-export const DeleteUser = async (req: Request, res: Response) => {
+export const DeleteUser = (req: Request, res: Response) => {
     const repo = AppDataSource.getRepository(User)
 
-    await repo.delete(req.params.id)
+    repo.delete({id: parseInt(req.params.id)})
+        .then(() => {
+            console.log('deleted');
+            
+            res.status(204).send({ body: null }) 
+        })
 
-    res.status(204).send({ body: null }) 
 }

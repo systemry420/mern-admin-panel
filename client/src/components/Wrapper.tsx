@@ -8,8 +8,8 @@ class Wrapper extends Component<any, any> {
         <>
             <Navbar />
     
-            <div className='container-fluid'>
-            <Sidebar />
+            <div className='row'>
+            {/* <Sidebar /> */}
             <main className='container col-9'>
                 {this.props.children}
             </main>

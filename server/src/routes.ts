@@ -23,7 +23,7 @@ export const routes = (router: Router) => {
     router.post('/api/users/create', AuthMiddleware, CreateUser)
     router.get('/api/users/:id', AuthMiddleware, GetUserById)
     router.put('/api/users/:id', AuthMiddleware, UpdateUser)
-    router.delete('/api/users/:id', AuthMiddleware, DeleteUser)
+    router.delete('/api/users/:id', DeleteUser)
 
     router.get('/api/roles', AuthMiddleware, GetRoles)
     router.get('/api/roles/:id', AuthMiddleware, GetRole)
