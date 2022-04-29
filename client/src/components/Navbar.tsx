@@ -23,6 +23,9 @@ const Navbar  = () => {
                 <li className="nav-item">
                     <a className="navbar-brand" href="/users">Users</a>
                 </li>
+                <li className="nav-item">
+                    <a className="navbar-brand" href="/products">Products</a>
+                </li>
             </ul>
         </nav>
     )
