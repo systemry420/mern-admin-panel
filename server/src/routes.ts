@@ -9,6 +9,7 @@ import { GetRole, GetRoles } from './controller/role.controller'
 import { CreateUser, DeleteUser, GetAllUsers, GetUserByEmail, GetUserById, UpdateUser } from './controller/user.controller'
 import { AuthMiddleware } from './middleware/auth.middleware'
 import { GetAllProducts, GetProductById, CreateProduct, UpdateProduct, DeleteProduct, UploadImage } from './controller/product.controller';
+import { GetAllOrders } from './controller/order.controlles'
 const express = require('express')
 
 export const routes = (router: Router) => {
@@ -35,8 +36,8 @@ export const routes = (router: Router) => {
     router.put('/api/products/:id', UpdateProduct)
     router.delete('/api/products/:id', DeleteProduct) 
 
-
-    
     router.post('/api/upload', UploadImage)
     router.use('/api/uploads', express.static('./uploads'))
+
+    router.get('/api/orders', GetAllOrders)
 }
