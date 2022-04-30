@@ -6,18 +6,24 @@ import Dashboard from './pages/Dashboard';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Products from './pages/Products';
-import { applyMiddleware, createStore } from 'redux';
+import { applyMiddleware, combineReducers, createStore } from 'redux';
 import { productReducer } from './redux/reducer/product.reducer';
 import { composeWithDevTools } from 'redux-devtools-extension'
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
+import { usersReducer } from './redux/reducer/users.reducer';
 
 const composeEnhancers = composeWithDevTools({
 
 })
 
+const root = combineReducers({
+  products: productReducer,
+  users: usersReducer
+})
+
 const store = createStore(
-  productReducer,
+  root,
   composeEnhancers(
     applyMiddleware(thunk)
   )

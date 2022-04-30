@@ -1,18 +1,15 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import Wrapper from '../components/Wrapper'
 import UserModel from '../models/User.model'
 
-const User = () => {
+const User = (props: {users: any}) => {
 
-  const [users, setUsers] = React.useState<UserModel[]>([])
+  const [users, setUsers] = React.useState([])
   
   React.useEffect(() => {
-    (async () => {
-      const res = await fetch('http://localhost:8000/api/users')
-      const users = await res.json()
-      setUsers(users)
-    })()
-  }, [])
+    setUsers(props.users)
+  }, [props])
 
   const deleteUser = (id: any) => {
     console.log(id);
@@ -26,7 +23,7 @@ const User = () => {
       .then(res => {
         console.log(res);
         setUsers((users) => {
-          return users.filter(user => user.id !== id)
+          return users.filter((user: UserModel) => user.id !== id)
         })
       })
   }
@@ -44,7 +41,7 @@ const User = () => {
             </tr>
           </thead>
           <tbody>
-            {users?.map(user => {
+            {users?.map((user: UserModel) => {
               return (
                 <tr key={user.id}>
                   <th scope="row">{user.id}</th>
@@ -63,4 +60,10 @@ const User = () => {
   )
 }
 
-export default User
+export default connect(
+  (state: any) => {
+    return {
+      users: state.users
+    }
+  }
+)(User)
