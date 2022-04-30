@@ -6,10 +6,27 @@ import Dashboard from './pages/Dashboard';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Products from './pages/Products';
+import { applyMiddleware, createStore } from 'redux';
+import { productReducer } from './redux/reducer/product.reducer';
+import { composeWithDevTools } from 'redux-devtools-extension'
+import thunk from 'redux-thunk';
+import { Provider } from 'react-redux';
+
+const composeEnhancers = composeWithDevTools({
+
+})
+
+const store = createStore(
+  productReducer,
+  composeEnhancers(
+    applyMiddleware(thunk)
+  )
+)
 
 function App() {
   return (
-    <div className="App">
+    <Provider store={store}>
+      <div className="App">
           <BrowserRouter>
             <Routes>
               <Route path='/' element={<Dashboard />} />
@@ -19,7 +36,8 @@ function App() {
               <Route path='/products' element={<Products />} />
             </Routes>
           </BrowserRouter>
-    </div>
+      </div>
+    </Provider>
   );
 }
 
