@@ -1,19 +1,16 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import Wrapper from '../components/Wrapper'
+import { getAllProducts } from '../redux/actions/product.actions'
 
-const Products = () => {
+const Products = (props: {prods: any, getProducts: any}) => {
 
     const [products, setproducts] = React.useState([])
   
     React.useEffect(() => {
-      (async () => {
-        const res = await fetch('http://localhost:8000/api/products')
-        const products = await res.json()
-        console.log(products);
-        
-        setproducts(products.data)
-      })()
-    }, [])
+        props.getProducts()
+        setproducts(props.prods)
+    }, [props.prods, props.getProducts])
   
   return (
     <Wrapper>
@@ -31,12 +28,13 @@ const Products = () => {
             {products?.map((product: any) => {
             return (
                 <tr key={product.id}>
-                <td>
-                    <img className='w-50' src={product.image} alt='a' />
-                </td>
-                <td>{product.title}</td>
-                <td>{product.description}</td>
-                <td>{product.price}</td>
+                  <td>{product.id}</td>
+                  <td>
+                      <img className='w-60' src={product.image} alt='a' />
+                  </td>
+                  <td>{product.title}</td>
+                  <td>{product.description}</td>
+                  <td>{product.price}</td>
                 </tr>
             )
             })}
@@ -46,4 +44,16 @@ const Products = () => {
   )
 }
 
-export default Products
+const mapStateToProps = (state: any) => {
+  return {
+    prods: state.products
+  }
+}
+
+const mapDispatchToProps = (dispatch: any) => {
+  return {
+    getProducts: () => dispatch(getAllProducts())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Products)
